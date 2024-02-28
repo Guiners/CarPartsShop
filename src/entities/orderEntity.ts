@@ -1,7 +1,8 @@
+import { Document } from 'mongoose';
 import { Product } from './productEntity'
 import { Address } from './addressEntity'
 
-export interface Order {
+export interface Order extends Document{
     email: string;
     products: [Product];
     price: number;

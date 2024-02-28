@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { Product } from '../entities/productEntity'
 
-
 const productSchema = new Schema<Product>({
     name: {
         type: String,

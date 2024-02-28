@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { Order } from '../entities/orderEntity'
 
-
 const orderSchema = new Schema<Order>({
     email: {
         type: String,

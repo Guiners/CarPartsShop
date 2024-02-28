@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { Address } from '../entities/addressEntity'
 
-
 const addressSchema = new Schema<Address>({
     streetName: {
         type: String,

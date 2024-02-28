@@ -1,4 +1,6 @@
-export interface Address {
+import { Document } from 'mongoose';
+
+export interface Address extends Document {
     streetName: string;
     apartmentNumber: number;
     doorNumber?: number;
