@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose , { Schema } from 'mongoose';
+import { User } from '../entities/userEntity'
 import { hashPassword } from '../services/hashService'
-const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new Schema<User>({
     email: {
         type: String,
         required: true
@@ -13,7 +13,7 @@ const userSchema = new Schema({
     },
     admin: {
         type: Boolean,
-        require: true
+        default: false
     }
 });
 
@@ -25,4 +25,4 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-module.exports = mongoose.model('userModel', userSchema);
+module.exports =  mongoose.model<User>('userModel', userSchema);

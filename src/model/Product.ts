@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
+import { Product } from '../entities/productEntity'
 
-const productSchema = new Schema({
+
+const productSchema = new Schema<Product>({
     name: {
         type: String,
         required: true
@@ -26,8 +27,6 @@ const productSchema = new Schema({
         type: Boolean,
         default: true
     }
-
 });
 
-
-module.exports = mongoose.model('productModel', productSchema);
+module.exports =  mongoose.model<Product>('productModel', productSchema);
