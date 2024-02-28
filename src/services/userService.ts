@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { User } from '../entities/userEntity';
 const UserDB = require('../model/User');
 const BlacklistedTokenDB = require('../model/blackListedTokens');
-const jwtAuth = require('../midllewear/authJWT')
+const jwtAuth = require('../middlewear/jwtAuth')
 
 const register = async (user: User) => {
     try {
@@ -37,7 +37,7 @@ const login = async (user: User) => {
 const logout = async (token: string) => {
     try {
         await BlacklistedTokenDB.create(token);
-        return { message: 'User logged out successfully' };
+        // return { message: 'User logged out successfully' };
     } catch (error) {
         throw new Error('Error logging out user');
     }

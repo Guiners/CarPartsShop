@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
-// app.use('/user', require('./routes/userRoutes'));
+app.use('/user', require('./routes/userRoutes'));
 
 // app.use('/home', require('./routes/homeRoutes'));
 

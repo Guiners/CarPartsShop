@@ -19,4 +19,13 @@ const loginUser = async (req: Request, res: Response) => {
     }
 }
 
-module.exports = { registerUser, loginUser };
+const logoutUser = async (req: Request, res: Response) => {
+    try {
+        await UserService.logout(req.body.token)
+        res.status(202).json({ "message": `Logout completed` });
+    } catch (error) {
+        return res.json({ "message": `${error}`});
+    }
+}
+
+module.exports = { registerUser, loginUser, logoutUser };
