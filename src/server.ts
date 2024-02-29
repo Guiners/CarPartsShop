@@ -13,6 +13,7 @@ app.use(express.json());
 
 
 app.use('/user', require('./routes/userRoutes'));
+app.use('/products', require('./routes/productRoutes'));
 
 // app.use('/home', require('./routes/homeRoutes'));
 

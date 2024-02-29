@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { Product } from '../entities/productEntity';
-import { UpdateProductI } from '../entities/updateProductEntity';
 const ProductService = require('../services/productService');
 
 const getProductsList = async (req: Request, res: Response) => {
@@ -46,4 +45,8 @@ const putProductDetails = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ "message": `${error}`})
     }
+}
+
+module.exports = {
+    getProductsList, getProductDetails, postNewProduct, deleteProduct, putProductDetails
 }

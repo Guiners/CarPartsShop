@@ -52,15 +52,35 @@ const removeProduct = async (id: string) => {
 
 const changeProductDetails = async (id: string, productParamethers: UpdateProductI) => {
     try{
-        const product: Product = await ProductDetails(id);
+        let product = await ProductDetails(id);
+        // let paramether: keyof Product;
 
-        for (let paramether in productParamethers) {
-            if (paramether !== 'id'){
-                if (productParamethers[paramether] !== undefined) {
-                product[paramether] = productParamethers[paramether];
-                }
-            }
-        }   
+        // for (paramether in productParamethers) {
+        //     if (paramether !== 'id'){
+        //         const key: keyof Product = paramether;
+
+        //         if (productParamethers[paramether] !== undefined && typeof product[paramether] === typeof productParamethers[paramether]) {
+        //         product[key] = productParamethers[paramether];
+        //         }
+        //     }
+        // }
+
+        // const keys: Array<keyof UpdateProductI> = ['name', 'price', 'category', 'carBrand', 'description', 'availability'];
+
+        // // Iterate over keys
+        // for (const paramether in productParamethers) {
+        //     if (Object.prototype.hasOwnProperty.call(productParamethers, paramether) && paramether !== 'id') {
+        //         console.log('paramether:', paramether);
+        //         const productValue: any = product[paramether]; // Explicitly specify the type as 'any'
+        //         console.log('productValue:', productValue);
+        //         const newValue: any = productParamethers[paramether]; // Explicitly specify the type as 'any'
+        //         console.log('newValue:', newValue);
+        //         if (newValue !== undefined && typeof productValue === typeof newValue) {
+        //             product[paramether] = newValue;
+        //         }
+        //     }
+        // }
+
 
         await product.save();
 
