@@ -9,7 +9,7 @@ const register = async (user: User) => {
     try {
         await UserDB.create(user);
     } catch (error) {
-        // console.error(`New error: ${error}`);
+        console.error(`New error: ${error}`);
         throw error;
     }
 }
@@ -36,10 +36,10 @@ const login = async (user: User) => {
 
 const logout = async (token: string) => {
     try {
-        await BlacklistedTokenDB.create(token);
-        // return { message: 'User logged out successfully' };
+        await BlacklistedTokenDB.create({token});
+        return { message: 'User logged out successfully' };
     } catch (error) {
-        throw new Error('Error logging out user');
+        throw new Error(`Error logging out user ${error}`);
     }
 };
     
