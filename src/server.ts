@@ -14,10 +14,10 @@ app.use(express.json());
 
 app.use('/user', require('./routes/userRoutes'));
 app.use('/products', require('./routes/productRoutes'));
+app.use('/order', require('./routes/orderRoutes'));
+
 
 // app.use('/home', require('./routes/homeRoutes'));
-
-// app.use('/order', require('./routes/orderRoutes'));
 
 // app.use('/payment', require('./routes/paymentRoutes'));
 
