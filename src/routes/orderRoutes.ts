@@ -3,14 +3,14 @@ const orderController = require('../controllers/orderController');
 const jwtAuth = require('../middlewear/jwtAuth');
 const router = express.Router();
 
-// router.route('/login')
-//     .post(userController.loginUser)
+router.route('/')
+    .get(jwtAuth.auth, orderController.getAllUserOrders)
+    .post(jwtAuth.auth, orderController.createNewOrder)
+    .put(jwtAuth.auth, orderController.editExistingOrder)
+    .delete(jwtAuth.auth, orderController.removeOrder)
 
-// router.route('/register')
-//     .post(userController.registerUser)
+router.route('/id')
+    .get(jwtAuth.auth, orderController.getSingleOrder)
 
-// router.route('/logout')
-//     .post(jwtAuth.auth, userController.logoutUser)  
 
-    
 module.exports = router;

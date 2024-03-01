@@ -4,7 +4,8 @@ import { BlacklistedToken } from '../entities/blackListedTokensEntity'
 const blacklistedTokenSchema = new Schema<BlacklistedToken>({
     token: { 
         type: String,
-        required: true 
+        required: true,
+        unique: true
     }
 });
 
