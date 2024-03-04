@@ -1,9 +1,4 @@
-import mongoose, { Model } from "mongoose";
 const OrderService = require('../services/orderService');
-import { Order } from '../entities/orderEntity';
-// const orderDB: Model<Order>  = require('../model/Order');
-// const productDB: Model<Product>  = require('../model/Product');
-
 
 const processPayment = async () => {
     console.log("Processing payment...");
@@ -30,5 +25,5 @@ const simulatePayment = async () => {
     }
 }
 
-
+module.exports = { simulatePayment }
 

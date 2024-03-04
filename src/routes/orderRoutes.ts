@@ -12,5 +12,7 @@ router.route('/')
 router.route('/id')
     .get(jwtAuth.auth, orderController.getSingleOrder)
 
+router.route('/realizeOrder')
+    .post(jwtAuth.auth, orderController.realizeOrder)
 
 module.exports = router;
