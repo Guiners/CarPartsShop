@@ -7,6 +7,6 @@ export interface Product extends Document {
     category: string;
     carBrand: string;
     description: string;
-    ammount: number;
+    amount: number;
     availability?: boolean;
 }

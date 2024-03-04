@@ -19,7 +19,7 @@ const orderSchema = new Schema<Order>({
         type: String,
         required: true
     },
-    adress: {
+    address: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'addressModel',
         required: true
@@ -29,11 +29,5 @@ const orderSchema = new Schema<Order>({
         default: false
     }
 });
-// adress to moze byc string
-// symulacja platnosci
 
-//serwis do kupowania
-// gotowe biblioteki z komponentami typu komponent menu, product table wsadzasz w widok
-// skumac stan use effect use state 
-// zmiany strony bez przeladowania
 module.exports = mongoose.model<Order>('orderModel', orderSchema);

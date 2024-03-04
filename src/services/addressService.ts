@@ -3,12 +3,8 @@ import { Address } from '../entities/addressEntity';
 const addressDB: Model<Address>  = require('../model/Address');
 
 const getAddress = async (addressInfo: Address) => {
-    try{
-        const address: Address = new addressDB(addressInfo);
-        return address;
-    } catch (error) {
-        throw error;
-    }
+    const address: Address = new addressDB(addressInfo);
+    return address;
 }
 
 module.exports = { getAddress };

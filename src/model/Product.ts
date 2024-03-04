@@ -22,7 +22,7 @@ const productSchema = new Schema<Product>({
         type: String,
         required: true
     },
-    ammount:{
+    amount:{
         type: Number,
         required: true
     },

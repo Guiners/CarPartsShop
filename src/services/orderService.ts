@@ -2,123 +2,121 @@ import mongoose, { Model } from "mongoose";
 import { Order } from '../entities/orderEntity';
 import { Address } from '../entities/addressEntity';
 import { Product } from '../entities/productEntity';
+const ProductService = require('../services/productService');
 // const addressDB: Model<Address>  = require('../model/Address');
 const orderDB: Model<Order>  = require('../model/Order');
 
 const createOrder = async (email: string, productsList: Product[], address: Address) => {
-    try{
 
-        if (!address || !email || !productsList.length) {
-            if (!address) {
-                throw new Error("Address is missing");
-            }
-            if (!email) {
-                throw new Error("Email is missing");
-            }
-            if (!productsList.length) {
-                throw new Error("No products provided");
-            }
+    if (!address || !email || !productsList.length) {
+        if (!address) {
+            throw new Error("Address is missing");
         }
-
-        let sumProductPrice: number = 0;
-
-        for (let product of productsList){
-            sumProductPrice += product.price;
+        if (!email) {
+            throw new Error("Email is missing");
         }
-
-        const newOrder: Order = {
-            email: email,
-            products: productsList,
-            price: sumProductPrice,
-            date: new Date().toLocaleString('pl-PL'),
-            adress: address,
+        if (!productsList.length) {
+            throw new Error("No products provided");
         }
-
-        return await orderDB.create(newOrder);
-    
-    } catch (error) {
-        throw error;
     }
+
+    let sumProductPrice: number = 0;
+
+    for (let product of productsList){
+        sumProductPrice += product.price;
+    }
+
+    const newOrder: Order = {
+        email: email,
+        products: productsList,
+        price: sumProductPrice,
+        date: new Date().toLocaleString('pl-PL'),
+        address: address,
+    }
+
+    return await orderDB.create(newOrder);
 }
 
 const getOrdersByEmail = async (email: string) => {
-    try{
-        const foundOrder: Order|null|Order[] = await orderDB.findOne({email: email}).exec();
+    const foundOrder: Order|null|Order[] = await orderDB.findOne({email: email}).exec(); // to nie wyrzuci listy emailow
 
-        if (!foundOrder || foundOrder !== null){
-            throw new Error("Order not found");
-        }
-
-        return foundOrder;
-    
-    } catch (error) {
-        throw error;
+    if (!foundOrder || foundOrder !== null){
+        throw new Error("Order not found");
     }
+
+    return foundOrder;
 }
 
-const getOrderById = async (id: string) => {
-    try{
-        const foundOrder: Order|null = await orderDB.findOne({_id: id}).exec();
+const getOrderById = async (id: string): Promise<Order> => {
+    const foundOrder: Order | null = await orderDB.findOne({ _id: id }).exec();
 
-        if (!foundOrder || foundOrder !== null){
-            throw new Error("Order not found");
-        }
-
-        return foundOrder;
-    
-    } catch (error) {
-        throw error;
+    if (!foundOrder) {
+        throw new Error("Order not found");
     }
-}
+
+    return foundOrder as Order;
+};
 
 const deleteOrder = async (id: string) => {
-    try{
         const foundOrder: Order = await getOrderById(id);
-       
         return orderDB.deleteOne({ _id: foundOrder._id });
-    } catch (error) {
-        throw error;
-    }
 }
 
 const editOrder = async (id: string, email: string, productsList: Product[], address: Address) => {
-    try{
-
-        if (!address || !email || !productsList.length) {
-            if (!address) {
-                throw new Error("Address is missing");
-            }
-            if (!email) {
-                throw new Error("Email is missing");
-            }
-            if (!productsList.length) {
-                throw new Error("No products provided");
-            }
+   
+    if (!address || !email || !productsList.length) {
+        if (!address) {
+            throw new Error("Address is missing");
         }
+        if (!email) {
+            throw new Error("Email is missing");
+        }
+        if (!productsList.length) {
+            throw new Error("No products provided");
+        }
+    }
 
-        let sumProductPrice: number = 0;
+    let sumProductPrice: number = 0;
 
-        for (let product of productsList){
-            sumProductPrice += product.price;
+    for (let product of productsList){
+        sumProductPrice += product.price;
+    }
+
+    const editedOrder: Order = {
+        email: email,
+        products: productsList,
+        price: sumProductPrice,
+        date: new Date().toLocaleString('pl-PL'),
+        address: address
+    }
+
+    const foundOrder: Order = await getOrderById(id);
+    
+    return await orderDB.findOneAndUpdate({ _id: foundOrder._id }, editedOrder, { new: true });   
+}
+
+const realizeOrder = async (id: string, successful: boolean) => {
+    if (successful) { 
+        const foundOrder: Order = await getOrderById(id);
+        
+        for (let item of foundOrder.products) {
+            ProductService.updateProductAvailability(item);
         }
 
         const editedOrder: Order = {
-            email: email,
-            products: productsList,
-            price: sumProductPrice,
+            email: foundOrder.email,
+            products: foundOrder.products,
+            price: foundOrder.price,
             date: new Date().toLocaleString('pl-PL'),
-            adress: address
+            address: foundOrder.address,
+            realized: true
         }
-
-        const foundOrder: Order = await getOrderById(id);
         
         return await orderDB.findOneAndUpdate({ _id: foundOrder._id }, editedOrder, { new: true });
-        // return await orderDB.create(editedOrder);
-    
-    } catch (error) {
-        throw error;
+    } else {
+        throw new Error('payment was not successful, cant finish realizing your order')
     }
 }
 
 
-module.exports = { createOrder, getOrdersByEmail,  deleteOrder, editOrder, getOrderById }
+module.exports = { createOrder, getOrdersByEmail,  deleteOrder, editOrder, getOrderById, realizeOrder}

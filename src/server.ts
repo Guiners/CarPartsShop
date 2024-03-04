@@ -1,11 +1,10 @@
 require('dotenv').config();
-import express from 'express'; // Poprawiony import
+import express from 'express'; 
 import mongoose from 'mongoose';
 import { connectDB } from './config/dbConnection';
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Domyślny port, jeśli nie zdefiniowano w pliku .env
-
+const PORT = process.env.PORT || 3000; 
 connectDB();
 
 app.use(express.urlencoded({ extended: false }));

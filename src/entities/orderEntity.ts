@@ -7,6 +7,6 @@ export interface Order extends Partial<Document>{
     products: Product[];
     price: number;
     date: string;
-    adress: Address;
+    address: Address;
     realized?: boolean
 }
