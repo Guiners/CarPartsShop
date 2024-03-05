@@ -1,7 +1,7 @@
 import mongoose, { Model } from "mongoose";
 import { Product } from '../entities/productEntity';
 import { UpdateProductI } from '../entities/updateProductEntity';
-const productDB: Model<Product>  = require('../model/Product');
+const productDB: Model<Product> = require('../model/Product');
 
 
 const ProductsList = async () => {
