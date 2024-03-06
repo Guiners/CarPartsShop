@@ -10,8 +10,8 @@ router.route('/')
     .delete(jwtAuth.auth, orderController.removeOrder)
 
 router.route('/id')
-    .get(jwtAuth.auth, orderController.getSingleOrder)
-
+    // .get(jwtAuth.auth, orderController.getSingleOrder)
+    .get(orderController.getSingleOrder)
 router.route('/realizeOrder')
     .post(jwtAuth.auth, orderController.realizeOrder)
 

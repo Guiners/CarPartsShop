@@ -38,7 +38,7 @@ const createOrder = async (email: string, productsList: Product[], address: Addr
 }
 
 const getOrdersByEmail = async (email: string) => {
-    const foundOrder: Order|null|Order[] = await orderDB.findOne({email: email}).exec(); // to nie wyrzuci listy emailow
+    const foundOrder: Order|null|Order[] = await orderDB.find({email: email}).exec();
 
     if (!foundOrder || foundOrder !== null){
         throw new Error("Order not found");
@@ -100,7 +100,7 @@ const realizeOrder = async (id: string, successful: boolean) => {
         const foundOrder: Order = await getOrderById(id);
         
         for (let item of foundOrder.products) {
-            ProductService.updateProductAvailability(item);
+            ProductService.updateProductAvailability(item, 1);
         }
 
         const editedOrder: Order = {

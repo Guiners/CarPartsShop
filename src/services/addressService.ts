@@ -3,7 +3,7 @@ import { Address } from '../entities/addressEntity';
 const addressDB: Model<Address>  = require('../model/Address');
 
 const createAddress = async (addressInfo: Address) => {
-    const address: Address = new addressDB(addressInfo);
+    const address: Address = await addressDB.create(addressInfo);
     return address;
 }
 
