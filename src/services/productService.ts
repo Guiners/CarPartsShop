@@ -84,18 +84,3 @@ const updateProductAvailability = async (id: string, quantityToBuy: number) => {
 
 
 module.exports = {ProductsList, ProductDetails, addProduct, removeProduct, changeProductDetails, updateProductAvailability}
-
-
-
-
-    // let paramether: keyof Product;
-
-    // for (paramether in productParamethers) {
-    //     if (paramether !== 'id'){
-    //         const key: keyof Product = paramether;
-
-    //         if (productParamethers[paramether] !== undefined && typeof product[paramether] === typeof productParamethers[paramether]) {
-    //         product[key] = productParamethers[paramether];
-    //         }
-    //     }
-    // }
