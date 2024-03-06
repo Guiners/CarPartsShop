@@ -2,10 +2,11 @@ import { Document } from 'mongoose';
 import { Product } from './productEntity'
 import { Address } from './addressEntity'
 
-export interface Order extends Document{
+export interface Order extends Partial<Document>{
     email: string;
-    products: [Product];
+    products: Product[];
     price: number;
     date: string;
-    adress: Address;
+    address: Address;
+    realized?: boolean
 }

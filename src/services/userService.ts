@@ -16,7 +16,6 @@ const register = async (user: User) => {
 
 const login = async (user: User) => {
     const foundUser: User = await UserDB.findOne({email: user.email});
-
     if (!foundUser) {
         throw new Error('User not found');
     };
@@ -42,7 +41,21 @@ const logout = async (token: string) => {
         throw new Error(`Error logging out user ${error}`);
     }
 };
+
+const removeUser = async (email: string) => {
+    try {
+    const foundUser: User | null = await UserDB.findOne({ email: email }).exec();
+
+    if (!foundUser) {
+        throw new Error("User not found");
+    }
+
+    return UserDB.deleteOne({ _id: foundUser._id });
+    } catch (error) {
+        throw new Error(`Error logging out user ${error}`);
+    }
+}
     
 
 
-module.exports = { login, register, logout };
+module.exports = { login, register, logout , removeUser};

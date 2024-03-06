@@ -22,6 +22,10 @@ const productSchema = new Schema<Product>({
         type: String,
         required: true
     },
+    amount:{
+        type: Number,
+        required: true
+    },
     availability: {
         type: Boolean,
         default: true

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Order } from '../entities/orderEntity'
+import { Order } from '../entities/orderEntity';
 
 const orderSchema = new Schema<Order>({
     email: {
@@ -19,10 +19,14 @@ const orderSchema = new Schema<Order>({
         type: String,
         required: true
     },
-    adress: {
+    address: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'addressModel',
         required: true
+    },
+    realized: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -1,5 +1,6 @@
 import express from 'express';
 const userController = require('../controllers/UserController');
+const jwtAuth = require('../middlewear/jwtAuth');
 const router = express.Router();
 
 router.route('/login')
@@ -9,7 +10,7 @@ router.route('/register')
     .post(userController.registerUser)
 
 router.route('/logout')
-    .post(userController.logoutUser)  
+    .post(jwtAuth.auth, userController.logoutUser)  
 
     
 module.exports = router;
