@@ -9,8 +9,10 @@ connectDB();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static("../client/build"));
 
-app.use('/', require('./routes/homeRoutes'));
+
+app.use('/home', require('./routes/homeRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/products', require('./routes/productRoutes'));
@@ -26,5 +28,8 @@ mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
+
+
+
 
 module.exports = app;

@@ -3,11 +3,10 @@ import { Request, Response } from 'express';
 const router = express.Router();
 
 const homePage = async (req: Request, res: Response) => {
-    res.status(200).send(`Homepage`);
+    let productList = ['prod1', 'prod2', 'prod3'];
+    return await res.status(200).json({ products: productList });
 }
 
-router.route('/')
-    .get(homePage)
+router.get('/', homePage);
 
-    
 module.exports = router;
