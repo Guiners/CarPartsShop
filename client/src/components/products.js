@@ -39,6 +39,8 @@ function AllProductsList() {
                             <p><strong>Category:</strong> {product.category}</p>
                             <p><strong>Amount:</strong> {product.amount}</p>
                             <p><strong>Description:</strong> {product.description}</p>
+                            <p><strong>id:</strong> {product._id}</p>
+
                             <p><strong>Availability:</strong> {product.availability ? 'Available' : 'Not Available'}</p>
                         </div>
                     </li>
