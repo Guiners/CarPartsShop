@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.button-container {
+  display: flex;
+  gap: 10px; /* Odstęp między przyciskami */
+}

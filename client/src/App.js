@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { AppProvider } from '@shopify/polaris';
+import Login from './components/login';
+import AllProductsList from './components/products';
+
+export const TokenContext = React.createContext(null);
 
 function App() {
-  const [backendData, setBackendData] = useState([]);
+    const [token, setToken] = useState('');
+    const [email, setEmail] = useState('');
+    
+    useEffect(() => {
+    }, [token]);
 
-  useEffect(() => {
-    fetch("/home").then(
-      response => response.json()
-    ).then(
-      data => {
-        setBackendData(data.products)
-      }
-    ).catch(error => {
-      console.error('Error fetching data:', error);
-    });
-  }, []);
-
-  return (
-    <div>
-      {(backendData.length === 0) ? (
-        <p>Loading...</p>
-      ):(
-        backendData.map((product, i) => (
-          <p key={i}>{product}</p>
-        ))
-      )}
-    </div>
-  );
+    return (
+        <AppProvider>
+            <TokenContext.Provider value={{ token, setToken}}>
+                <div>
+                    {token ? <AllProductsList /> : <Login />}
+                </div>
+            </TokenContext.Provider>
+        </AppProvider>
+    );
 }
 
 export default App;
