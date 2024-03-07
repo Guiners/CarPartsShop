@@ -9,7 +9,9 @@ export const TokenContext = React.createContext(null);
 function App() {
     const [token, setToken] = useState('');
     const [email, setEmailState] = useState('');
-    
+    const [isMainPage, setisMainPage] = useState(true);
+
+
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
@@ -24,11 +26,12 @@ function App() {
 
     return (
         <AppProvider>
-            <TokenContext.Provider value={{ token, setToken, email, setEmailState}}>
+            <TokenContext.Provider value={{ token, setToken, email, setEmailState, isMainPage, setisMainPage}}>
                 <div>
                     {token ? (
                         <>
                             <TopLayout />
+
                             <AllProductsList />
                         </>
                     ) : (

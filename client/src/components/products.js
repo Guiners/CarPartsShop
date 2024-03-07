@@ -5,13 +5,64 @@ import { TokenContext } from '../App';
 const SERVER_URL = 'http://localhost:4000/';
 
 function AllProductsList() {
+
     const { token } = useContext(TokenContext);
     const { email } = useContext(TokenContext);
+    
+    const { isMainPage } = useContext(TokenContext);
+    
+    const [showModal, setShowModal] = useState(false);
+    const [modalText, setModalText] = useState('');
+    
+
     const [productsList, setProductsList] = useState([]);
+    const [order, setOrderValue] = useState({
+        email: email,
+        products: [],
+        price: 0,
+        date: "",
+        address: "",
+        realized: false
+    });
+
+    const handleOpenModal = (text) => {
+        setModalText(text);
+        setShowModal(true);
+        // setTimeout(() => {
+        //     setShowModal(false);
+        // }, 3000); // Ukryj okienko po 3 sekundach
+    };
 
     useEffect(() => {
         getProductsList();
     }, []);
+
+
+    const addProductToOrder = async (id)=> {
+        const newProducts = [...order.products, id];
+
+        setOrderValue(prevState => ({
+            ...prevState,
+            products: newProducts
+        }));
+
+
+    };
+
+    const createOrder = async () => {
+        try {
+            const response = await axios.post(SERVER_URL + 'order/', 
+                JSON.stringify(order),
+                {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
 
     const getProductsList = async () => {
         try {
@@ -96,10 +147,34 @@ function AllProductsList() {
         unavailable: {
             color: 'red',
         },
+        buttonsContainer: {
+            display: 'flex',
+        },
+        button: {
+            marginLeft: '10px',
+            padding: '10px 15px',
+            borderRadius: '5px',
+            border: 'none',
+            backgroundColor: '#008000',
+            color: '#fff',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease',
+        },
     });
 
     return (
         <div style={getStyles().container}>
+    <div>
+        {Object.values(order.products).map(productId => {
+            const product = Object.values(productsList).find(item => item._id === productId);
+            if (product) {
+                return <h2 key={product._id}>{product.name}</h2>;
+            }
+            return null;
+        })}
+    </div>
+
+            {/* <h2 style={getStyles().heading}>{order.products}</h2> */}
             {Array.isArray(productsList) ? (
                 <div style={getStyles().container}>
                     <h2 style={getStyles().heading} onClick={getProductsList}>Products List</h2>
@@ -113,16 +188,22 @@ function AllProductsList() {
                                     <p><strong>Category:</strong> {product.category}</p>
                                     <p style={product.availability ? getStyles().available : getStyles().unavailable}>Availability: {product.availability ? 'Available' : 'Not Available'}</p>
                                 </div>
+                                <button style={getStyles().button} onClick={() => {addProductToOrder(product._id); handleOpenModal('Added to basket')}}>Add to basket</button>
+                        {showModal && (
+                        <div>
+                            <p>{modalText}</p>
+                        </div>
+                        )}
                             </li>
                         ))}
                     </ul>
                 </div>
             ) : (
                 <div style={getStyles().container}>
-                    <h2 style={getStyles().heading} onClick={getProductsList}>Get back to Products List</h2>
+                    <h2 style={getStyles().heading}>Product Details</h2>
                     <ul style={getStyles().productList}></ul>
                     <li key={productsList.id} style={getStyles().productItem}>
-                        <div style={getStyles().productDetails}>
+                    <div style={getStyles().productDetails} onClick={() => getProductsList()}>
                             <h3 style={getStyles().productName}>{productsList.name}</h3>
                             <p style={getStyles().productPrice}>Price: ${productsList.price}</p>
                             <p><strong>Car Brand:</strong> {productsList.carBrand}</p>
@@ -131,6 +212,13 @@ function AllProductsList() {
                             <p><strong>Description:</strong> {productsList.description}</p>
                             <p style={productsList.availability ? getStyles().available : getStyles().unavailable}>Availability: {productsList.availability ? 'Available' : 'Not Available'}</p>
                         </div>
+                        <button style={getStyles().button} onClick={() => {addProductToOrder(productsList._id); handleOpenModal('Added to basket')}}>Add to basket</button>
+                        {showModal && (
+                        <div>
+                            <p>{modalText}</p>
+                        </div>
+                    )}
+
                     </li>
                 </div>
             )}

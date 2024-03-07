@@ -3,7 +3,6 @@ import { Order } from '../entities/orderEntity';
 import { Address } from '../entities/addressEntity';
 import { Product } from '../entities/productEntity';
 const ProductService = require('../services/productService');
-// const addressDB: Model<Address>  = require('../model/Address');
 const orderDB: Model<Order>  = require('../model/Order');
 
 const createOrder = async (email: string, productsList: Product[], address: Address) => {
