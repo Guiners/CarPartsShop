@@ -17,6 +17,7 @@ app.use(express.static("../client/build"));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/products', require('./routes/productRoutes'));
 app.use('/order', require('./routes/orderRoutes'));
+app.use('/address', require('./routes/addressRoutes'));
 
 
 mongoose.connection.once('open', () => {

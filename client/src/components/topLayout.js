@@ -5,8 +5,17 @@ const SERVER_URL = 'http://localhost:4000/';
 
 function TopLayout() {
     const { setToken } = useContext(TokenContext);
+    const { setisMainPage } = useContext(TokenContext);
+    const { isMainPage } = useContext(TokenContext);
+
+
     const handleLogout = () => {
         setToken('');
+        setisMainPage(true);
+    }
+
+    const changePage = async () => {
+        setisMainPage(!isMainPage);
     }
 
     useEffect(() => {
@@ -14,7 +23,10 @@ function TopLayout() {
 
     return (
         <div style={styles.container}>
-            <h1 style={styles.heading}>Car Parts</h1>
+            {isMainPage === false ? (
+                <h1 style={styles.heading} onClick={changePage}>Car Parts</h1>
+                ) : (
+                    <h1 style={styles.heading}>Car Parts</h1> )}
             <div style={styles.buttonsContainer}>
                 <button style={styles.button} onClick={handleLogout}>Logout</button>
                 <button style={styles.button}>Orders</button>

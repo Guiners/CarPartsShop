@@ -7,30 +7,24 @@ const SERVER_URL = 'http://localhost:4000/';
 function AllProductsList() {
 
     const { token } = useContext(TokenContext);
-    const { email } = useContext(TokenContext);
-    
+    // const { email } = useContext(TokenContext);
+    const { order } = useContext(TokenContext);
+    const { setOrder } = useContext(TokenContext);
+    const { setisMainPage } = useContext(TokenContext);
     const { isMainPage } = useContext(TokenContext);
-    
+    const { productsList } = useContext(TokenContext);
+    const { setProductsList } = useContext(TokenContext);
+
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
     
 
-    const [productsList, setProductsList] = useState([]);
-    const [order, setOrderValue] = useState({
-        email: email,
-        products: [],
-        price: 0,
-        date: "",
-        address: "",
-        realized: false
-    });
-
     const handleOpenModal = (text) => {
         setModalText(text);
         setShowModal(true);
-        // setTimeout(() => {
-        //     setShowModal(false);
-        // }, 3000); // Ukryj okienko po 3 sekundach
+        setTimeout(() => {
+            setShowModal(false);
+        }, 3000); 
     };
 
     useEffect(() => {
@@ -41,28 +35,42 @@ function AllProductsList() {
     const addProductToOrder = async (id)=> {
         const newProducts = [...order.products, id];
 
-        setOrderValue(prevState => ({
+        setOrder(prevState => ({
             ...prevState,
             products: newProducts
         }));
-
+        
 
     };
+    
+    const changePage = async () => {
+        setisMainPage(!isMainPage);
+}
 
-    const createOrder = async () => {
-        try {
-            const response = await axios.post(SERVER_URL + 'order/', 
-                JSON.stringify(order),
-                {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+    const renderProductNames = () => {
+        return Object.values(order.products).map(productId => {
+            const product = Object.values(productsList).find(item => item._id === productId);
+            if (product) {
+                return <h2 key={product._id}>{product.name}</h2>;
+            }
+            return null;
+        });
+    };
+
+    // const createOrder = async () => {
+    //     try {
+    //         const response = await axios.post(SERVER_URL + 'order/', 
+    //             JSON.stringify(order),
+    //             {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
             
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
-    };
+    //     } catch (error) {
+    //         console.error('Error fetching products:', error);
+    //     }
+    // };
 
     const getProductsList = async () => {
         try {
@@ -165,13 +173,8 @@ function AllProductsList() {
     return (
         <div style={getStyles().container}>
     <div>
-        {Object.values(order.products).map(productId => {
-            const product = Object.values(productsList).find(item => item._id === productId);
-            if (product) {
-                return <h2 key={product._id}>{product.name}</h2>;
-            }
-            return null;
-        })}
+        {renderProductNames()}
+        <button style={getStyles().button} onClick={() => {changePage();}}>Continue Ordering</button>
     </div>
 
             {/* <h2 style={getStyles().heading}>{order.products}</h2> */}
@@ -181,8 +184,8 @@ function AllProductsList() {
                     <ul style={getStyles().productList}>
                         {productsList.map(product => (
                             <li key={product.id} style={getStyles().productItem}>
-                                <div style={getStyles().productDetails} onClick={() => getProductsDetails(product._id)}>
-                                    <h3 style={getStyles().productName}>{product.name}</h3>
+                                <div style={getStyles().productDetails}>
+                                    <h3 style={getStyles().productName} onClick={() => getProductsDetails(product._id)}>{product.name}</h3>
                                     <p style={getStyles().productPrice}>Price: ${product.price}</p>
                                     <p><strong>Car Brand:</strong> {product.carBrand}</p>
                                     <p><strong>Category:</strong> {product.category}</p>
@@ -203,8 +206,8 @@ function AllProductsList() {
                     <h2 style={getStyles().heading}>Product Details</h2>
                     <ul style={getStyles().productList}></ul>
                     <li key={productsList.id} style={getStyles().productItem}>
-                    <div style={getStyles().productDetails} onClick={() => getProductsList()}>
-                            <h3 style={getStyles().productName}>{productsList.name}</h3>
+                    <div style={getStyles().productDetails}>
+                            <h3 style={getStyles().productName} onClick={() => getProductsList()}>{productsList.name}</h3>
                             <p style={getStyles().productPrice}>Price: ${productsList.price}</p>
                             <p><strong>Car Brand:</strong> {productsList.carBrand}</p>
                             <p><strong>Category:</strong> {productsList.category}</p>
