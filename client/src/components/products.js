@@ -39,7 +39,7 @@ function AllProductsList() {
             ...prevState,
             products: newProducts
         }));
-        
+        console.log(order.products)
 
     };
     
@@ -80,6 +80,7 @@ function AllProductsList() {
                 }
             });
             setProductsList(response.data);
+
         } catch (error) {
             console.error('Error fetching products:', error);
         }

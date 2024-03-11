@@ -18,6 +18,7 @@ app.use('/user', require('./routes/userRoutes'));
 app.use('/products', require('./routes/productRoutes'));
 app.use('/order', require('./routes/orderRoutes'));
 app.use('/address', require('./routes/addressRoutes'));
+// app.use('/payment', require('./routes/paymentRoutes'));
 
 
 mongoose.connection.once('open', () => {

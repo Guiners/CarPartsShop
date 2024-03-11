@@ -32,6 +32,8 @@ function App() {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
             setToken(storedToken);
+        } else {
+            setToken('')
         }
 
         const storedEmail = localStorage.getItem('email');
@@ -64,7 +66,9 @@ function App() {
                                 )}
                         </>
                     ) : (
-                        <Login />
+                        <>
+                            <Login />
+                        </>
                     )}
                 </div>
             </TokenContext.Provider>

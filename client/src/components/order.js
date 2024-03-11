@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { TokenContext } from '../App';
-
+import Address from './address'
 const SERVER_URL = 'http://localhost:4000/';
 
 function Order() {
@@ -9,6 +9,7 @@ function Order() {
     const { token } = useContext(TokenContext);
     // const { email } = useContext(TokenContext);
     const { order } = useContext(TokenContext);
+    const { email } = useContext(TokenContext);
     const { setOrder } = useContext(TokenContext);
     const { setisMainPage } = useContext(TokenContext);
     const { isMainPage } = useContext(TokenContext);
@@ -16,6 +17,49 @@ function Order() {
     const { setProductsList } = useContext(TokenContext);
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
+    
+
+    const handleOpenModal = (text) => {
+        setModalText(text);
+        setShowModal(true);
+        setTimeout(() => {
+            setShowModal(false);
+        }, 3000); 
+    };
+
+    const renderProductNames = () => {
+        return Object.values(order.products).map(productId => {
+            const product = Object.values(productsList).find(item => item._id === productId);
+            if (product) {
+                return <h2 key={product._id}>{product.name}</h2>;
+            }
+            return null;
+        });
+    };
+
+    useEffect(() => {
+        renderProductNames();
+    }, []);
+
+     const createOrder = async () => {
+        try {
+            // console.log(order.products)
+            // console.log(order.price)
+            const response = await axios.post(SERVER_URL + 'order', {
+                email: email,
+                productsList: order.products,
+                address: order.address,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(response.data.price);
+
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
+
     const getStyles = () => ({
         container: {
             display: 'flex',
@@ -87,42 +131,13 @@ function Order() {
             transition: 'background-color 0.3s ease',
         },
     });
-
-    const handleOpenModal = (text) => {
-        setModalText(text);
-        setShowModal(true);
-        setTimeout(() => {
-            setShowModal(false);
-        }, 3000); 
-    };
-
-    const addAddressToOrder = async (newAddress) => {
-        setOrder(prevState => ({
-            ...prevState,
-            address: newAddress
-        }));
-    };
-
-    const renderProductNames = () => {
-        return Object.values(order.products).map(productId => {
-            const product = Object.values(productsList).find(item => item._id === productId);
-            if (product) {
-                return <h2 key={product._id}>{product.name}</h2>;
-            }
-            return null;
-        });
-    };
-
-    useEffect(() => {
-        renderProductNames();
-    }, []);
-
     return (
         <div style={getStyles().container}>
             <h1>Ordered items</h1>
             <div>{renderProductNames()}</div>
-
-            <button style={getStyles().button} onClick={() => {handleOpenModal('Go to Payment');}}>Go to Payment</button>
+                <div><Address /></div>
+                <button style={getStyles().button} onClick={() => {createOrder();}}>Pay for your order</button>
+           
             <h3>{modalText}</h3>
         </div>
     );

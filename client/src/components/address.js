@@ -10,17 +10,13 @@ function Address() {
     // const { email } = useContext(TokenContext);
     const { order } = useContext(TokenContext);
     const { setOrder } = useContext(TokenContext);
-    const { setisMainPage } = useContext(TokenContext);
-    const { isMainPage } = useContext(TokenContext);
-    const { productsList } = useContext(TokenContext);
-    const { setProductsList } = useContext(TokenContext);
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
 
     const [address, setAddress] = useState({
         streetName: '',
-        apartmentNumber: '',
-        doorNumber: '',
+        apartmentNumber: 0,
+        doorNumber: 0,
         postCode: '',
         city: '',
         country: ''
@@ -33,6 +29,68 @@ function Address() {
             setShowModal(false);
         }, 3000); 
     };
+
+    const createAddress = async () => {
+        try {
+            const response = await axios.post(SERVER_URL + 'address', {
+                streetName: address.streetName,
+                apartmentNumber: address.apartmentNumber,
+                doorNumber: address.doorNumber,
+                postCode: address.postCode,
+                city: address.city,
+                country: address.country,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            addAddressToOrder(response.data);
+
+        } catch (error) {
+            console.error('Error creating address in:', error);
+        }
+    };
+
+    const getAddress = async (id) => {
+        try {
+            const response = await axios.get(SERVER_URL + 'address', {
+                id,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+        
+        } catch (error) {
+            console.error('Error creating address in:', error);
+        }
+    };
+
+    // const addAddressToOrderByID = async (newAddress) => {
+    //     setOrder(prevState => ({
+    //         ...prevState,
+    //         address: newAddress
+    //     }));
+    // };
+
+    const addAddressToOrder = async (newAddress) => {
+        setOrder(prevState => ({
+            ...prevState,
+            address: newAddress
+        }));
+    };
+
+    const setAddressValue = async (parametr, value) => {
+
+        setAddress(prevState => ({
+            ...prevState,
+            [parametr]: value
+        }));
+    }
+
+    const handleInputChange = async (e) => {
+        const { name, value } = e.target;
+        // console.log(`Name: ${name}, Value: ${value}`);
+        setAddressValue(name, value);
+    }
     const getStyles = () => {
         return {
             container: {
@@ -133,55 +191,11 @@ function Address() {
             },
         };
     };
-    
-    const createAddress = async () => {
-        try {
-            const response = await axios.post(SERVER_URL + 'address/', {
-                address,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-        
-        } catch (error) {
-            console.error('Error creating address in:', error);
-        }
-    };
-
-    const getAddress = async (id) => {
-        try {
-            const response = await axios.get(SERVER_URL + 'address/', {
-                id,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-        
-        } catch (error) {
-            console.error('Error creating address in:', error);
-        }
-    };
-
-
-    const setAddressValue = async (parametr, value) => {
-
-        setAddress(prevState => ({
-            ...prevState,
-            [parametr]: value
-        }));
-    }
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setAddressValue(name, value);
-    }
-
     return (
     <div style={getStyles().container}>
-        <h1>Enter Address</h1>
         {/* <button style={getStyles().button} onClick={() => {handleOpenModal('Go to Payment');}}>Submit Address</button> */}
         <div style={getStyles().formLayout}>
-            <h2 style={getStyles().heading}>Car Parts</h2>
+            <h2 style={getStyles().heading}>Enter Address</h2>
             <input
                 type="text"
                 name="streetName"
@@ -224,9 +238,9 @@ function Address() {
                 value={address.country}
                 onChange={handleInputChange}
             />
-               
-            <button onClick={createAddress} style={{ ...getStyles().button, ...getStyles().loginButton }}>Submit Address</button>
-            
+
+            <button onClick={() => {createAddress(); handleOpenModal('Address added ');}} style={{ ...getStyles().button, ...getStyles().loginButton }}>Submit Address</button>
+            <h3>{modalText}</h3>
         </div>
     </div>
     );
