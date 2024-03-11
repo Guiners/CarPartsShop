@@ -1,4 +1,3 @@
-const OrderService = require('../services/orderService');
 
 const processPayment = async () => {
     console.log("Processing payment...");

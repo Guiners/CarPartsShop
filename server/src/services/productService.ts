@@ -25,6 +25,11 @@ const ProductDetails = async (id: string) => {
 }
 
 const addProduct = async (product: Product) => {
+    
+    if (product.availability === null || product.amount <= 0) {
+        product.availability = false;
+    }
+
     const newProduct: Product = await productDB.create(product);
     return newProduct;
 }

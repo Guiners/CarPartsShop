@@ -3,7 +3,6 @@ import { Order } from '../entities/orderEntity';
 import { Address } from '../entities/addressEntity';
 import { Product } from '../entities/productEntity';
 const ProductService = require('../services/productService');
-// const addressDB: Model<Address>  = require('../model/Address');
 const orderDB: Model<Order>  = require('../model/Order');
 
 const createOrder = async (email: string, productsList: Product[], address: Address) => {
@@ -23,7 +22,8 @@ const createOrder = async (email: string, productsList: Product[], address: Addr
     let sumProductPrice: number = 0;
 
     for (let product of productsList){
-        sumProductPrice += product.price;
+        let singleProduct = await ProductService.ProductDetails(product);
+        sumProductPrice += singleProduct.price;
     }
 
     const newOrder: Order = {
