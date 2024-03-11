@@ -1,0 +1,13 @@
+TO DO
+
+wyciagnac email z loginu
+
+wyeksportowac style z product do odzielnego css
+
+wprowadzic logike, ze jezeli avalivilty jest false to nie wyswietla
+
+dodac ze jak klikniesz w nazwe albo w przycisk wiecej szczegolow to przechodzisz do details
+
+dorobic pozostale funkcje
+
+ogarnac jak sie robi testy dla reacta

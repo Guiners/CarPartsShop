@@ -7,4 +7,9 @@ const createAddress = async (addressInfo: Address) => {
     return address;
 }
 
-module.exports = { createAddress };
+const getAddress = async (id: string) => {
+    const address = await addressDB.findOne({_id: id}).exec();
+    return address;
+}
+
+module.exports = { createAddress, getAddress };
