@@ -11,6 +11,7 @@ function TopLayout() {
 
     const handleLogout = () => {
         setToken('');
+        localStorage.setItem('token', '');
         setisMainPage(true);
     }
 
@@ -66,7 +67,6 @@ const styles = {
         transition: 'background-color 0.3s ease',
     },
 };
-
 
 
 export default TopLayout;

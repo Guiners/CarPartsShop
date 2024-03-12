@@ -12,6 +12,7 @@ function App() {
     const [token, setToken] = useState('');
     const [email, setEmailState] = useState('');
     const [order, setOrder] = useState({
+            id: '',
             email: email,
             products: [],
             price: 0,
@@ -21,7 +22,9 @@ function App() {
         });;
 
     const [isMainPage, setisMainPage] = useState(true);
-    const [productsList, setProductsList] = useState([]);
+    const [productsList, setProductsList] = useState([]);   
+    const [isPaid, setIsPaid] = useState(false);   
+
 
 
     useEffect(() => {
@@ -32,8 +35,6 @@ function App() {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
             setToken(storedToken);
-        } else {
-            setToken('')
         }
 
         const storedEmail = localStorage.getItem('email');
@@ -46,15 +47,21 @@ function App() {
             setOrder(storedOrder);
         }
 
+        const storedisPaid= localStorage.getItem('isPaid');
+        if (storedisPaid) {
+            setIsPaid(storedisPaid);
+        }
+
         const storedisMainPage= localStorage.getItem('isMainPage');
         if (storedisMainPage) {
             setisMainPage(storedisMainPage);
         }
+
     }, []);
 
     return (
         <AppProvider>
-            <TokenContext.Provider value={{ token, setToken, email, setEmailState, isMainPage, setisMainPage, order, setOrder , isMainPage, setisMainPage, productsList, setProductsList}}>
+            <TokenContext.Provider value={{ token, setToken, email, setEmailState, isMainPage, setisMainPage, order, setOrder , isMainPage, setisMainPage, productsList, setProductsList, isPaid, setIsPaid}}>
                 <div>
                     {token ? (
                         <>

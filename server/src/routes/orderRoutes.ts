@@ -17,5 +17,5 @@ router.route('/id')
     
 router.route('/realizeOrder')
     .post(jwtAuth.auth, orderController.realizeOrder)
-
+    // .post(orderController.realizeOrder)
 module.exports = router;
