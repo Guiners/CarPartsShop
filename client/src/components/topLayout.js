@@ -30,7 +30,6 @@ function TopLayout() {
                     <h1 style={styles.heading}>Car Parts</h1> )}
             <div style={styles.buttonsContainer}>
                 <button style={styles.button} onClick={handleLogout}>Logout</button>
-                <button style={styles.button}>Orders</button>
             </div>
         </div>
     );

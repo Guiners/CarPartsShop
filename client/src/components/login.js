@@ -42,27 +42,29 @@ function Login() {
     };
 
     return (
-        <div style={styles.formLayout}>
-            <h2 style={{ fontSize: '2.5em', color: '#444', marginBottom: '30px' }}>Car Parts</h2>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                autoComplete="off"
-                style={{ ...styles.textField, marginTop: '20px' }}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                style={styles.textField}
-            />
-            <button onClick={handleLogin} style={{ ...styles.button, ...styles.loginButton }}>Log in</button>
-            <button onClick={handleRegister} style={{ ...styles.button, ...styles.registerButton }}>Register</button>
-        </div>
-    );
+        <form onSubmit={handleLogin} style={styles.formLayout}>
+          <h2 style={{ fontSize: '2.5em', color: '#444', marginBottom: '30px' }}>Car Parts</h2>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            autoComplete="off"
+            style={{ ...styles.textField, marginTop: '20px' }}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            style={styles.textField}
+          />
+          <button type="submit" onClick={handleLogin} style={{ ...styles.button, ...styles.loginButton }}>Log in</button>
+          <button type="button" onClick={handleRegister} style={{ ...styles.button, ...styles.registerButton }}>Register</button>
+        </form>
+      );
+      
+      
 }
 
 const styles = {
