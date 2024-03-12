@@ -11,6 +11,7 @@ function TopLayout() {
 
     const handleLogout = () => {
         setToken('');
+        localStorage.setItem('token', '');
         setisMainPage(true);
     }
 
@@ -29,7 +30,6 @@ function TopLayout() {
                     <h1 style={styles.heading}>Car Parts</h1> )}
             <div style={styles.buttonsContainer}>
                 <button style={styles.button} onClick={handleLogout}>Logout</button>
-                <button style={styles.button}>Orders</button>
             </div>
         </div>
     );
@@ -66,7 +66,6 @@ const styles = {
         transition: 'background-color 0.3s ease',
     },
 };
-
 
 
 export default TopLayout;

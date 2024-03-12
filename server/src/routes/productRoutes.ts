@@ -9,6 +9,9 @@ router.route('/')
     .put(jwtAuth.auth, productController.putProductDetails)
     .delete(jwtAuth.auth, productController.deleteProduct)
 
+router.route('/filter')
+    .get(jwtAuth.auth, productController.getFiltredProductsList)
+
 router.route('/:id')
     .get(jwtAuth.auth, productController.getProductDetails)
 

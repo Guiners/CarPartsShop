@@ -5,8 +5,17 @@ const productDB: Model<Product> = require('../model/Product');
 
 
 const ProductsList = async () => {
-   
     const products: Product[] = await productDB.find();
+
+    if (!products){
+        throw new Error(`No product found`);
+    }
+
+    return products;
+}
+
+const FiltredProductsList = async (filter: string, value: string) => {
+    const products: Product[] = await productDB.find({category: value}).exec();
 
     if (!products){
         throw new Error(`No product found`);
@@ -14,6 +23,17 @@ const ProductsList = async () => {
     
     return products;
 }
+
+const ClearDataBase = async () => {
+    try {
+        // Usuń wszystkie dokumenty z kolekcji
+        const result = await productDB.deleteMany({});
+        console.log(`Usunięto ${result.deletedCount} dokumentów.`);
+    } catch (error) {
+        console.error('Błąd podczas czyszczenia bazy danych:', error);
+    }
+}
+
 
 const ProductDetails = async (id: string) => {
     const foundProduct: Product|null = await productDB.findOne({_id: id}).exec();
@@ -88,4 +108,4 @@ const updateProductAvailability = async (id: string, quantityToBuy: number) => {
 }
 
 
-module.exports = {ProductsList, ProductDetails, addProduct, removeProduct, changeProductDetails, updateProductAvailability}
+module.exports = {ProductsList, ProductDetails, addProduct, removeProduct, changeProductDetails, updateProductAvailability, FiltredProductsList}

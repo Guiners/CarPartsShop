@@ -11,6 +11,15 @@ const getProductsList = async (req: Request, res: Response) => {
     }
 }
 
+const getFiltredProductsList = async (req: Request, res: Response) => {
+    try{
+        const productsList: Product[] = await ProductService.ProductsList(req.body.filter, req.body.value);
+        res.status(200).json(productsList);
+    } catch (error) {
+        res.status(500).json({ "message": `${error}`})
+    }
+}
+
 const getProductDetails = async (req: Request, res: Response) => {
     try{
         const product: Product = await ProductService.ProductDetails(req.params.id);
@@ -48,5 +57,5 @@ const putProductDetails = async (req: Request, res: Response) => {
 }
 
 module.exports = {
-    getProductsList, getProductDetails, postNewProduct, deleteProduct, putProductDetails
+    getProductsList, getProductDetails, postNewProduct, deleteProduct, putProductDetails, getFiltredProductsList
 }
