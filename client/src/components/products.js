@@ -6,16 +6,10 @@ const SERVER_URL = 'http://localhost:4000/';
 
 function AllProductsList() {
 
-    const { token } = useContext(TokenContext);
-    const { order } = useContext(TokenContext);
-    const { setOrder } = useContext(TokenContext);
-    const { setisMainPage } = useContext(TokenContext);
-    const { isMainPage } = useContext(TokenContext);
-    const { productsList } = useContext(TokenContext);
-    const { setProductsList } = useContext(TokenContext);
+    const { token, order, setOrder, setisMainPage, isMainPage, productsList, setProductsList, filters } = useContext(TokenContext);
     const [showModal, setShowModal] = useState(false);
     const [modalText, setModalText] = useState('');
-    
+    const [filteredItems, setFilteredItems] = useState([]);
 
     const handleOpenModal = (text) => {
         setModalText(text);
@@ -26,9 +20,17 @@ function AllProductsList() {
     };
 
     useEffect(() => {
-        getProductsList();
+         getProducts().then((result) => {
+          setFilteredItems(result)
+          setProductsList(result)
+        })
     }, []);
 
+    useEffect(() => {
+        const filteredProducts = filterProductsByCarBrand(filters.carBrand);
+        setFilteredItems(filteredProducts)
+
+    }, [filters]);
 
     const addProductToOrder = async (id)=> {
         const newProducts = [...order.products, id];
@@ -66,11 +68,31 @@ function AllProductsList() {
       );
     };
     
+    
+    const filterProductsByCarBrand = () => {
+      if(!filters.carBrand) {
+        return productsList;
+      }
+
+      const filteredProducts = productsList.filter((product) => {
+        return product.carBrand === filters.carBrand //&& product.category === filters.category && product.availability === filters.availability
+      })
+      // if filters.map((filter) => filter.carBrand).includes(product.carBrand)
+      // filter = {carBrand, availability}
+      return filteredProducts;
+    }
+    // const filterProductsByPrice = (price) => {
+    //   const filteredProducts = productsList.filter((product) => {
+    //     return product.price === price;
+    //   })
+
+    //   setProductsList(filteredProducts)
+    // }
 
     const getProductsList = async () => {
         try {
             const response = await axios.get(SERVER_URL + 'products/', {
-                headers: {
+              headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
@@ -80,6 +102,21 @@ function AllProductsList() {
             console.error('Error fetching products:', error);
         }
     };
+    
+    const getProducts = async () => {
+      try {
+        const response = await axios.get(SERVER_URL + 'products/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        return response.data;
+
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+    }
 
     const getProductsDetails = async (id) => {
         try {
@@ -93,7 +130,7 @@ function AllProductsList() {
             console.error('Error fetching product:', error);
         }
     };
-
+   
     const renderProductDetails = () => (
         <div style={getStyle().container}>
             <h2 style={getStyle().heading}>Product Details</h2>
@@ -126,7 +163,7 @@ function AllProductsList() {
         <div style={getStyle().container}>
             <h2 style={getStyle().heading} onClick={getProductsList}>Products List</h2>
             <ul style={getStyle().productList}>
-                {productsList.map(product => (
+                {filteredItems.map(product => (
                     <li key={product._id} style={getStyle().productItem}>
                         <div style={getStyle().productDetails}>
                             <h3 style={getStyle().productName} onClick={() => getProductsDetails(product._id)}>{product.name}</h3>
