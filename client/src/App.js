@@ -61,7 +61,8 @@ function App() {
 
     }, []);
 
-    const carBrands = [...new Set(productsList.map(p => p.carBrand))];
+    const carBrands = Array.isArray(productsList) ? [...new Set(productsList.map(p => p.carBrand))] : [];
+
 
     return (
         <AppProvider>

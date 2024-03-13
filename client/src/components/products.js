@@ -50,7 +50,7 @@ function AllProductsList() {
     const renderProductNames = () => {
       return (
         <div style={getStyle().container}>
-          <h1>Ordered Items</h1>
+          <h1>Items in Cart</h1>
           <div style={getStyle().productList}>
             {Object.values(order.products).map(productId => {
               const product = Object.values(productsList).find(item => item._id === productId);
@@ -71,12 +71,14 @@ function AllProductsList() {
     
     const filterProductsByCarBrand = () => {
       if(!filters.carBrand) {
+        console.log(productsList)
         return productsList;
       }
 
       const filteredProducts = productsList.filter((product) => {
         return product.carBrand === filters.carBrand //&& product.category === filters.category && product.availability === filters.availability
       })
+      
       // if filters.map((filter) => filter.carBrand).includes(product.carBrand)
       // filter = {carBrand, availability}
       return filteredProducts;
