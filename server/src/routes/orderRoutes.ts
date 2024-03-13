@@ -5,17 +5,14 @@ const router = express.Router();
 
 router.route('/')
     .get(jwtAuth.auth, orderController.getAllUserOrders)
-    // .post(jwtAuth.auth, orderController.createNewOrder)
-    .post(orderController.createNewOrder)
+    .post(jwtAuth.auth, orderController.createNewOrder)
     .put(jwtAuth.auth, orderController.editExistingOrder)
     .delete(jwtAuth.auth, orderController.removeOrder)
 
 router.route('/id')
-    // .get(jwtAuth.auth, orderController.getSingleOrder)
-    .get(orderController.getSingleOrder)
+    .get(jwtAuth.auth, orderController.getSingleOrder)
 
     
 router.route('/realizeOrder')
-    // .post(jwtAuth.auth, orderController.realizeOrder)
-    .post(orderController.realizeOrder)
+    .post(jwtAuth.auth, orderController.realizeOrder)
 module.exports = router;

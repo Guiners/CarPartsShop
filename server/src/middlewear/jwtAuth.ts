@@ -10,8 +10,9 @@ export interface CustomRequest extends Request {
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
-
+        const token = req.header('Authorization')?.replace('Bearer ', '') ?? 
+        req.body.headers.Authorization.replace('Bearer ', '');
+    
         if (!token) {
             throw new Error();
         } 

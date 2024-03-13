@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.route('/')
     .get(jwtAuth.auth, addressController.getAddress)
-    // .post(jwtAuth.auth, addressController.createAddress)
-    .post(addressController.createAddress)
+    .post(jwtAuth.auth, addressController.createAddress)
 
 module.exports = router;

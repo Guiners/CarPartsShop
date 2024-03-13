@@ -4,6 +4,7 @@ import Login from './components/login';
 import TopLayout from './components/topLayout';
 import AllProductsList from './components/products';
 import Order from './components/order';
+import Filters from "./components/filters"
 
 
 export const TokenContext = React.createContext(null);
@@ -19,11 +20,12 @@ function App() {
             date: "",
             address: "",
             realized: false
-        });;
+        });
 
     const [isMainPage, setisMainPage] = useState(true);
     const [productsList, setProductsList] = useState([]);   
     const [isPaid, setIsPaid] = useState(false);   
+    const [filters, setFilters] = useState({carBrand: ''});
 
 
 
@@ -59,13 +61,16 @@ function App() {
 
     }, []);
 
+    const carBrands = [...new Set(productsList.map(p => p.carBrand))];
+
     return (
         <AppProvider>
-            <TokenContext.Provider value={{ token, setToken, email, setEmailState, isMainPage, setisMainPage, order, setOrder , isMainPage, setisMainPage, productsList, setProductsList, isPaid, setIsPaid}}>
+            <TokenContext.Provider value={{ token, setToken, email, setEmailState, isMainPage, setisMainPage, order, setOrder , isMainPage, setisMainPage, productsList, setProductsList, isPaid, setIsPaid, filters, setFilters}}>
                 <div>
                     {token ? (
                         <>
                             <TopLayout />
+                            <Filters carBrands={carBrands}/>
                             {isMainPage ? (
                                 <AllProductsList />
                             ) : (
